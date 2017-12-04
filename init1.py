@@ -8,7 +8,7 @@ app = Flask(__name__)
 #Configure MySQL
 conn = pymysql.connect(host='localhost',
                        user='root',
-                       password='root',
+                       password='',
                        db='meetup3',
                        charset='utf8mb4',
                        cursorclass=pymysql.cursors.DictCursor)

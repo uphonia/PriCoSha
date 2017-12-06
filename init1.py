@@ -6,10 +6,10 @@ import pymysql.cursors
 app = Flask(__name__)
 
 #Configure MySQL
-conn = pymysql.connect(host='localhost',
-                       user='root',
-                       password='',
-                       db='meetup3',
+conn = pymysql.connect(host='192.168.64.2',
+                       user='angela',
+                       password='angela',
+                       db='PriCoSha',
                        charset='utf8mb4',
                        cursorclass=pymysql.cursors.DictCursor)
 
@@ -61,6 +61,8 @@ def registerAuth():
 	#grabs information from the forms
 	username = request.form['username']
 	password = request.form['password']
+	fname = request.form['fname']
+	lname = request.form['lname']
 
 	#cursor used to send queries
 	cursor = conn.cursor()
@@ -76,11 +78,11 @@ def registerAuth():
 		error = "This user already exists"
 		return render_template('register.html', error = error)
 	else:
-		ins = 'INSERT INTO user VALUES(%s, %s)'
-		cursor.execute(ins, (username, password))
+		ins = 'INSERT INTO user VALUES(%s, %s, %s, %s)'
+		cursor.execute(ins, (username, password, fname, lname))
 		conn.commit()
 		cursor.close()
-		return render_template('index.html')
+		return render_template('home.html')
 
 @app.route('/home')
 def home():
@@ -106,8 +108,8 @@ def post():
 
 @app.route('/logout')
 def logout():
-	session.pop('username')
-	return redirect('/')
+	session.pop('username', None)
+	return redirect(url_for('login'))
 		
 app.secret_key = 'some key that you will never guess'
 #Run the app on localhost port 5000

@@ -1,4 +1,4 @@
-CREATE TABLE Person {
+CREATE TABLE user {
 	username varchar(20),
     password varchar(50),
     fname varchar(20),
@@ -42,7 +42,7 @@ CREATE TABLE share {
     FOREIGN KEY ID references Content(ID)
 };
 
-CREATE TABLE By {
+CREATE TABLE comment_by {
 	timestamp Timestamp(100)
 	ID int (8),
 	username varchar(20),
@@ -52,7 +52,7 @@ CREATE TABLE By {
     FOREIGN KEY username references Person(username)
 };
 
-CREATE TABLE On {
+CREATE TABLE comment_on {
 	timestamp Timestamp(100),
 	ID int(8),
 	owner_id int(8),
@@ -62,7 +62,7 @@ CREATE TABLE On {
     FOREIGN KEY ID references Content(ID)
 };
 
-CREATE TABLE Member {
+CREATE TABLE member_of {
 	username varchar(20),
 	name varchar(20),
 	owner varchar(20),

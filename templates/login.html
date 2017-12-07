@@ -1,18 +1,26 @@
 <html>
 <head>
-
+    <style>
+        h1 {
+            text-align:center;
+        }
+    </style>
 </head>
 <body>
-<form action="/loginAuth" method="POST">
-	<input type="text" name = "username" placeholder="username" required/> </br>
-	<input type="password" name = "password" placeholder="password" required/></br>
-	<input type="submit" value = Login />
-	{% if error %}
-		<p class="error"><strong>Error:</strong> {{error}}</p>
-	{% endif %}
-</form>
+        <h1> Login to PriCoSha: </h1>
+        
+        <form action="/loginAuth" method="POST" style="text-align:center">
+            <input type="text" name = "username" placeholder="username" required/> </br>
+            <input type="password" name = "password" placeholder="password" required/></br>
+            <input type="submit" value = Login />
+            {% if error %}
+                <p class="error"><strong>Error:</strong> {{error}}</p>
+            {% endif %}
+        </form>
 
-<a href="/">Go back</a>
+        <div style="text-align:center">
+            <a href="/">Go back</a>
+        </div>
 
 </body>
 

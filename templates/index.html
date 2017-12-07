@@ -20,12 +20,15 @@
 
     <h1> Welcome to PriCoSha! </h1>
     <h2> Please Login below. If no account, please register instead. </h2>
-{% if not message %}
-	<a href="/login">Login</a>
-	<a href="/register">Register</a>
-{% endif %}
+    
+    {% if not message %}
+    <div style="text-align:center">
+        <a href="/login">Login</a> <br>
+        <a href="/register">Register</a>
+    </div>
+    {% endif %}
 
-{% if message %}
+    {% if message %}
 	<a href="/logout">Logout</a>
 	<a href="/remove_account">Remove Account</a>
 	<p class="message">You are logged in {{message}}. You have {{num}} follower(s)</p> </br>
@@ -36,11 +39,11 @@
 	<a href="/post">Post something!</a> </br>
 	</br>
 
-        <h4>15 most recent tweets from you and your followers </h4> </br>
+    <h4>15 most recent tweets from you and your followers </h4> </br>
 
 	{% for line in tweets%}
-	        <p>{{line}}</p>
-	        <hr>
+	    <p>{{line}}</p>
+	    <hr>
 	{% endfor %}
 	{% endif %}
 </body>

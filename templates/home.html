@@ -36,7 +36,7 @@
     
     <form action="/post" method="POST">
         Title: <input type="text" name ="name" placeholder="Name of Content" required/> </br>
-        Link(optional): <input type="text" name = "link" placeholder="Link"/> </br>
+        Link (optional): <input type="text" name = "link" placeholder="Link"/> </br>
         
         <select name="privacy" id = "pr" onchange="myFunction()">
             <option value="public">Public</option>
@@ -57,7 +57,6 @@
 
     <table>
         <th>Name</th>
-        <th>Date</th>
         <th>Time</th>
         <th>Link</th>
         <th>privacy</th>
@@ -65,7 +64,6 @@
         {% for line in posts %}
             <tr>
                 <td>{{line.name}}</td>
-                <td>{{line.date}}</td>
                 <td>{{line.timestamp}}</td>
                 <td>{{line.link}}</td>
                 <td>{{line.privacy}}</td>

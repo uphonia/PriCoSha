@@ -86,26 +86,42 @@ def registerAuth():
 
 @app.route('/home')
 def home():
-	username = session['username']
-	cursor = conn.cursor();
-	query = 'SELECT ts, blog_post FROM blog WHERE username = %s ORDER BY ts DESC'
-	cursor.execute(query, (username))
-	data = cursor.fetchall()
-	cursor.close()
-	return render_template('home.html', username=username, posts=data)
-
+    username = session['username']
+    cursor = conn.cursor();
+    query = 'SELECT name, description FROM FriendGroup WHERE username = %s'
+    cursor.execute(query, (username))
+    data2 = cursor.fetchall()
+    query = 'SELECT timestamp, name, link, privacy FROM Content WHERE username = %s ORDER BY timestamp DESC'
+    cursor.execute(query, (username))
+    data = cursor.fetchall()
+    cursor.close()
+    return render_template('home.html', username=username, posts=data, friendgroups=data2)
 		
 @app.route('/post', methods=['GET', 'POST'])
 def post():
 	username = session['username']
 	cursor = conn.cursor();
-	blog = request.form['blog']
-	query = 'INSERT INTO blog (blog_post, username) VALUES(%s, %s)'
-	cursor.execute(query, (blog, username))
+	name = request.form['name']
+	link = request.form['link']
+	privacy = request.form['privacy']
+	query = 'INSERT INTO Content (name, link, privacy, username) VALUES(%s, %s, %s, %s)'
+	cursor.execute(query, (name, link, privacy, username))
 	conn.commit()
 	cursor.close()
 	return redirect(url_for('home'))
-
+	
+@app.route('/addfg', methods=['GET', 'ADDFG'])
+def addfg():
+    username = session['username']
+    cursor = conn.cursor();
+    name = request.form['name']
+    description = request.form['description']
+    query = 'INSERT INTO FriendGroup (name, description, username) VALUES (%s, %s, %s)'
+    cursor.execute(query, (name, description, username))
+    conn.commit()
+    cursor.close()
+    return redirect(url_for('home'))
+    
 @app.route('/logout')
 def logout():
 	session.pop('username', None)

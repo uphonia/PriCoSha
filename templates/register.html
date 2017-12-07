@@ -1,19 +1,29 @@
 <html>
 <head>
+    <style>
+        h1 {
+            text-align:center;
+        }
+    </style>
 </head>
 <body>
-<form action="/registerAuth" method="POST">
-	<input type="text" name = "username" placeholder="username" required/> </br>
-	<input type="password" name = "password" placeholder="password" required/></br>
-	<input type="text" name = "fname" placeholder="first name" required/></br>
-	<input type="text" name = "lname" placeholder="last name" required/></br>
-	<input type="submit" value = Register />
-	{% if error %}
-		<p class="error"><strong>Error:</strong> {{error}}</p>
-	{% endif %}
-</form>
 
-<a href="/">Go back</a>
+    <h1> Register for PriCoSha: </h1>
+    <div style="text-align:center">
+        <form action="/registerAuth" method="POST">
+            <input type="text" name = "username" placeholder="username" required/> </br>
+            <input type="password" name = "password" placeholder="password" required/></br>
+            <input type="text" name = "fname" placeholder="first name" required/></br>
+            <input type="text" name = "lname" placeholder="last name" required/></br>
+            <input type="submit" value = Register />
+            {% if error %}
+                <p class="error"><strong>Error:</strong> {{error}}</p>
+            {% endif %}
+        </form>
+        <a href="/">Go back</a>
+    </div>
+
+
 
 </body>
 

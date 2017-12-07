@@ -1,52 +1,79 @@
 <html>
 <head>
-</head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<body>
-<form action="/post" method="POST">
-	<h1>Welcome {{username}}</h1> 
-    Title: <input type="text" name = "blog" placeholder="post" required/> </br>
-    Link(optional): <input type="text" name = "link" placeholder="post"/> </br>
-    <select name="privacy" id = "pr" onchange="myFunction()">
-        <option value="public">Public</option>
-        <option value="private">Private</option>
-    </select>
-	
-	 <select id = "friends">
-	
-	{% for line in friendgroups %}
-		<option value = {{line.Title}}> {{line.Title}} </option>
-	{% endfor %}
-	</select>
-
-	
-    </br>
-	<input type="submit" value = Post />
-</form>
-
-<style type="text/css">
-	table, th, td{
+    <style>
+    table, th, td{
 		border: 1px solid black;
 	}
-</style>
+    </style>
+</head>
 
-<table>
-	<th>Time</th>
-	<th>Post</th>
-	<th>link</th>
-	<th>privacy</th>
-	
-{% for line in posts %}
-	<tr>
-		<td>{{line.ts}}</td>
-		<td>{{line.blog_post}}</td>
-		<td>{{line.link}}</td>
-		<td>{{line.privacy}}</td>
-	</tr>
-{% endfor %}
-</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<a href="/logout">Logout</a>
+<body>
+    <h1>Welcome {{username}}</h1> 
+    
+    <h3> Friend Groups: </h3>
+    
+    <form action="/addfg" method="ADDFG">
+        Name: <input type="text" name = "name" placeholder="Name of Group" required/> </br>
+        Description: <input type="text" name = "description" placeholder="What is this group about" required/> </br>
+        <input type="submit" value = Create />
+    </form>
+    
+    <table>
+        <th>Name</th>
+        <th>Description</th>
+        
+        {% for line in friendgroups %}
+            <tr>
+                <td>{{line.name}}</td>
+                <td>{{line.description}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <h3> Post Content: </h3>
+    
+    <form action="/post" method="POST">
+        Title: <input type="text" name ="name" placeholder="Name of Content" required/> </br>
+        Link(optional): <input type="text" name = "link" placeholder="Link"/> </br>
+        
+        <select name="privacy" id = "pr" onchange="myFunction()">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+
+        <select id = "friends">
+            {% for line in friendgroups %}
+                <option value = {{line.Title}}> {{line.Title}} </option>
+            {% endfor %}
+        </select>
+        
+        </br>
+        
+        <input type="submit" value = Post />
+        
+    </form>
+
+    <table>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Link</th>
+        <th>privacy</th>
+    
+        {% for line in posts %}
+            <tr>
+                <td>{{line.name}}</td>
+                <td>{{line.date}}</td>
+                <td>{{line.timestamp}}</td>
+                <td>{{line.link}}</td>
+                <td>{{line.privacy}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/logout">Logout</a>
 
 </body>
 

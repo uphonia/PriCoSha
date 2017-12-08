@@ -14,7 +14,7 @@
     
     <h3> Friend Groups: </h3>
     
-    <form action="/addfg" method="ADDFG">
+    <form action="/addfg" method="POST">
         Name: <input type="text" name = "name" placeholder="Name of Group" required/> </br>
         Description: <input type="text" name = "description" placeholder="What is this group about" required/> </br>
         <input type="submit" value = Create />
@@ -42,19 +42,20 @@
             <option value="public">Public</option>
             <option value="private">Private</option>
         </select>
-
+        
         <select id = "friends">
             {% for line in friendgroups %}
                 <option value = {{line.Title}}> {{line.Title}} </option>
             {% endfor %}
         </select>
         
+        
         </br>
         
         <input type="submit" value = Post />
         
     </form>
-
+    
     <table>
         <th>Name</th>
         <th>Time</th>
@@ -70,7 +71,7 @@
             </tr>
         {% endfor %}
     </table>
-
+    
     <a href="/logout">Logout</a>
 
 </body>

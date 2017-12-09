@@ -95,7 +95,7 @@ def home():
     cursor.execute(query, (username))
     data = cursor.fetchall()
     cursor.close()
-    return render_template('home.html', username=username, posts=data, friendgroups=data2)
+    return render_template('home.html', username=username, posts=data, friendgroups=data2) 
 		
 @app.route('/post', methods=['GET', 'POST'])
 def post():
@@ -103,7 +103,7 @@ def post():
 	cursor = conn.cursor();
 	name = request.form['name']
 	link = request.form['link']
-	privacy = request.form['privacy']
+	privacy = request.form['privacy']r
 	id = int(request.form['id'])
 	query = 'INSERT INTO Content (name, link, privacy, username,id ) VALUES(%s, %s, %s, %s, %s)'
 	cursor.execute(query, (name, link, privacy, username, id))
@@ -115,7 +115,7 @@ def post():
 		
 	query = 'INSERT INTO Post (username, id) VALUES (%s, %s)'
 	cursor.execute (query, (username, id))
-	
+
 	conn.commit()
 	cursor.close()
 	return redirect(url_for('home'))
@@ -127,7 +127,7 @@ def addfg():
     name = request.form['name']
     description = request.form['description']
     query = 'INSERT INTO FriendGroup (name, description, username) VALUES (%s, %s, %s)'
-    cursor.execute(query, (name, description, username))
+    cursor.execute(query, (name, description, username))   
     conn.commit()
     cursor.close()
     return redirect(url_for('home'))

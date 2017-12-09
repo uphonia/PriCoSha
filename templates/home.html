@@ -12,7 +12,7 @@
 <body>
     <h1>Welcome {{username}}</h1> 
     
-    <h3> Friend Groups: </h3>
+    <h3> Create Friend Groups: </h3>
     
     <form action="/addfg" method="POST">
         Name: <input type="text" name = "name" placeholder="Name of Group" required/> </br>
@@ -31,32 +31,49 @@
             </tr>
         {% endfor %}
     </table>
+	
+	<h3> Add to your existing Friend Groups </h3>
+	
+	<form action="/addtofg" method="POST">
+		Username: <input type="text" name="name" placeholder="User of friend" required/> <br>
+		<select name = "friendgroups">
+        {% for line in friendgroups %}
+           <option value = {{line.name}}> {{line.name}} </option>
+        {% endfor %}
+        </select>
+		<br>
+		<input type="submit" value = AddFriend>
+	</form>
+	
+	
     
     <h3> Post Content: </h3>
     
     <form action="/post" method="POST">
+		<input type ="hidden" id="hiddenID" name="id" /> 
         Title: <input type="text" name ="name" placeholder="Name of Content" required/> </br>
-        Link (optional): <input type="text" name = "link" placeholder="Link"/> </br>
+        Link (optional): <input type="text" id= "link" name = "link" placeholder="Link"/> </br>
         
         <select name="privacy" id = "pr" onchange="myFunction()">
             <option value="public">Public</option>
             <option value="private">Private</option>
         </select>
-        
-        <select id = "friends">
+
+        <select name = "friends" id="friends">
+
             {% for line in friendgroups %}
-                <option value = {{line.Title}}> {{line.Title}} </option>
+                <option value = {{line.name}}> {{line.name}} </option>
             {% endfor %}
         </select>
         
         
         </br>
-        
-        <input type="submit" value = Post />
+        <input type="submit" value = Post onclick="getRandomID"/>
         
     </form>
     
     <table>
+		<th>ID</th>
         <th>Name</th>
         <th>Time</th>
         <th>Link</th>
@@ -64,6 +81,7 @@
     
         {% for line in posts %}
             <tr>
+				<td>{{line.ID}}</td>
                 <td>{{line.name}}</td>
                 <td>{{line.timestamp}}</td>
                 <td>{{line.link}}</td>
@@ -78,7 +96,6 @@
 
 
 <script type="text/javascript">
-	
 	function myFunction() {
 		var x = document.getElementById("pr").value;
 		if(x == "private") {
@@ -92,6 +109,13 @@
 	$( document ).ready(function() {
 		$("#friends").hide()
 	});
+	
+	function getRandomID() {
+		var contentid;
+		contentid = Math.floor(Math.random()*900);
+		document.getElementById("hiddenID").value = contentid;
+	}
+	window.onload = getRandomID();
 
 </script>
 

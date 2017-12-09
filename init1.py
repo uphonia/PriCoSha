@@ -6,9 +6,9 @@ import pymysql.cursors
 app = Flask(__name__)
 
 #Configure MySQL
-conn = pymysql.connect(host='192.168.64.2',
-                       user='angela',
-                       password='angela',
+conn = pymysql.connect(host='localhost',
+                       user='root',
+                       password='',
                        db='PriCoSha',
                        charset='utf8mb4',
                        cursorclass=pymysql.cursors.DictCursor)
@@ -91,7 +91,7 @@ def home():
     query = 'SELECT name, description FROM FriendGroup WHERE username = %s'
     cursor.execute(query, (username))
     data2 = cursor.fetchall()
-    query = 'SELECT timestamp, name, link, privacy FROM Content WHERE username = %s ORDER BY timestamp DESC'
+    query = 'SELECT ID, timestamp, name, link, privacy FROM Content WHERE username = %s ORDER BY timestamp DESC'
     cursor.execute(query, (username))
     data = cursor.fetchall()
     cursor.close()
@@ -103,9 +103,19 @@ def post():
 	cursor = conn.cursor();
 	name = request.form['name']
 	link = request.form['link']
-	privacy = request.form['privacy']
-	query = 'INSERT INTO Content (name, link, privacy) VALUES(%s, %s, %s)'
-	cursor.execute(query, (name, link, privacy))
+	privacy = request.form['privacy']r
+	id = int(request.form['id'])
+	query = 'INSERT INTO Content (name, link, privacy, username,id ) VALUES(%s, %s, %s, %s, %s)'
+	cursor.execute(query, (name, link, privacy, username, id))
+	
+	if privacy == "private":
+		friendgroups = request.form['friends']
+		query = 'INSERT INTO Share (name, ID, owner) VALUES (%s, %s, %s)'
+		cursor.execute(query,( friendgroups, id, username))
+		
+	query = 'INSERT INTO Post (username, id) VALUES (%s, %s)'
+	cursor.execute (query, (username, id))
+
 	conn.commit()
 	cursor.close()
 	return redirect(url_for('home'))
@@ -113,7 +123,7 @@ def post():
 @app.route('/addfg', methods=['GET', 'POST'])
 def addfg():
     username = session['username']
-    cursor = conn.cursor();
+    cursor = conn.cursor()
     name = request.form['name']
     description = request.form['description']
     query = 'INSERT INTO FriendGroup (name, description, username) VALUES (%s, %s, %s)'
@@ -121,6 +131,18 @@ def addfg():
     conn.commit()
     cursor.close()
     return redirect(url_for('home'))
+	
+@app.route('/addtofg', methods=['GET', 'POST'])
+def addtofg():
+	username = session['username']
+	cursor = conn.cursor()
+	name = request.form['name']
+	friendgroup = request.form['friendgroups']
+	query = 'INSERT INTO member_of (username, name, owner) VALUES (%s, %s, %s)'
+	cursor.execute (query, (name, friendgroup, username)) 
+	conn.commit()
+	cursor.close()
+	return redirect(url_for('home'))
     
 @app.route('/logout')
 def logout():

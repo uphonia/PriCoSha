@@ -118,7 +118,7 @@ def post():
 		
 	query = 'INSERT INTO Post (username, id) VALUES (%s, %s)'
 	cursor.execute (query, (username, id))
-	
+
 	conn.commit()
 	cursor.close()
 	return redirect(url_for('home'))
@@ -130,7 +130,7 @@ def addfg():
     name = request.form['name']
     description = request.form['description']
     query = 'INSERT INTO FriendGroup (name, description, username) VALUES (%s, %s, %s)'
-    cursor.execute(query, (name, description, username))
+    cursor.execute(query, (name, description, username))   
     conn.commit()
     cursor.close()
     return redirect(url_for('home'))

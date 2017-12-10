@@ -30,7 +30,6 @@
     <h3> Create Friend Groups: </h3>
     
     <form action="/addfg" method="POST">
-		
         Name: <input type="text" name = "name" placeholder="Name of Group" required/> </br>
         Description: <input type="text" name = "description" placeholder="What is this group about" required/> </br>
         <input type="submit" value = Create />
@@ -76,16 +75,18 @@
         </select>
 
         <select name = "friends" id="friends">
+
             {% for line in friendgroups %}
                 <option value = {{line.name}}> {{line.name}} </option>
             {% endfor %}
         </select>
         
+        
         </br>
         <input type="submit" value = Post onclick="getRandomID"/>
         
     </form>
-
+    
     <table>
 		<th>ID</th>
         <th>Name</th>
@@ -103,7 +104,7 @@
             </tr>
         {% endfor %}
     </table>
-
+    
     <a href="/logout">Logout</a>
 
 </body>

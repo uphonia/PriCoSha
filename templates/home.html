@@ -11,6 +11,21 @@
 
 <body>
     <h1>Welcome {{username}}</h1> 
+	
+	<h3> Timeline: </h3>
+	<table>
+        <th>Name</th>
+        <th>Link</th>
+		<th>Timestamp</th>
+        
+        {% for line in postline %}
+            <tr>
+                <td>{{line.name}}</td>
+                <td>{{line.link}}</td>
+				<td>{{line.timestamp}}</td>
+            </tr>
+        {% endfor %}
+    </table>
     
     <h3> Create Friend Groups: </h3>
     

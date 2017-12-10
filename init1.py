@@ -94,8 +94,11 @@ def home():
     query = 'SELECT ID, timestamp, name, link, privacy FROM Content WHERE username = %s ORDER BY timestamp DESC'
     cursor.execute(query, (username))
     data = cursor.fetchall()
+    query = 'SELECT name, link, timestamp FROM content WHERE privacy = "public" OR name in (SELECT content.name FROM content INNER JOIN share NATURAL JOIN member_of ON content.username = share.owner AND content.ID = share.ID WHERE share.name = member_of.name AND member_of.username = %s OR content.privacy = "public")ORDER BY timestamp DESC'
+    cursor.execute(query, (username))
+    sharedposts = cursor.fetchall()
     cursor.close()
-    return render_template('home.html', username=username, posts=data, friendgroups=data2)
+    return render_template('home.html', username=username, posts=data, friendgroups=data2, postline = sharedposts)
 		
 @app.route('/post', methods=['GET', 'POST'])
 def post():

@@ -113,6 +113,18 @@ def viewtags():
     
     return render_template('tags.html')
 
+@app.route('/viewfg', methods=['GET', 'POST'])
+def viewfg():
+
+    return render_template('friendgroup.html')
+
+@app.route('/content')
+def content():
+    username = session['username']
+    cursor = conn.cursor();
+    
+    return render_template('content.html')
+    
 @app.route('/comment', methods=['GET', 'POST'])
 def comment():
     username = session['username']
@@ -176,20 +188,38 @@ def addfg():
     description = request.form['description']
     query = 'INSERT INTO FriendGroup (name, description, username) VALUES (%s, %s, %s)'
     cursor.execute(query, (name, description, username))   
+    query = 'INSERT INTO member_of (username, name, owner) VALUES (%s, %s, %s)'
+    cursor.execute(query, (username, name, username))
     conn.commit()
     cursor.close()
     return redirect(url_for('home'))
-	
+
+@app.route('/removeFriend', methods=['GET', 'POST'])
+def removeFriend():
+    username = session['username']
+    friend = request.form['friend']
+    name = request.form['group']
+    
+    cursor = conn.cursor()
+    query = 'DELETE FROM member_of WHERE username = %s && name = %s && owner = %s'
+    cursor.execute(query, (friend, name, username))
+    conn.commit()
+    cursor.close()
+    
+    return redirect(url_for('home'))
+    
 @app.route('/addtofg', methods=['GET', 'POST'])
 def addtofg():
 	username = session['username']
+	group = request.form['group']
+	name = request.form['friend']
+	
 	cursor = conn.cursor()
-	name = request.form['name']
-	friendgroup = request.form['friendgroups']
 	query = 'INSERT INTO member_of (username, name, owner) VALUES (%s, %s, %s)'
-	cursor.execute (query, (name, friendgroup, username)) 
+	cursor.execute (query, (name, group, username)) 
 	conn.commit()
 	cursor.close()
+	
 	return redirect(url_for('home'))
     
 @app.route('/logout')

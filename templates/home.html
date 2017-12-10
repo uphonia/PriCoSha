@@ -20,6 +20,7 @@
 		<th>Timestamp</th>
 		<th>Tag?</th>
 		<th>Comment?</th>
+		<th>View</th>
         
         {% for line in postline %}
             <tr>
@@ -41,6 +42,9 @@
 				        <input type="submit" id="comm_butt" value = "Comment">
 				    </form>
 				</td>
+				<td>
+				    <a href="/content">View</a>
+				</td>
             </tr>
         {% endfor %}
     </table> <br>
@@ -55,18 +59,37 @@
         <input type="submit" value = Create />
     </form>
     
+    <h3> Friend Groups: </h3>
     <table>
         <th>Name</th>
         <th>Description</th>
-        
+        <th>Add Friend</th>
+        <th>Remove Friend</th>
+        <th>View</th>
+    
         {% for line in friendgroups %}
             <tr>
                 <td>{{line.name}}</td>
                 <td>{{line.description}}</td>
+                <td>
+                    <form action="/addtofg" method="POST">
+                        <input type="text" name="friend" placeholder="Username of friend">
+                        <input type="hidden" name="group" value="{{line.name}}">
+        		        <input type="submit" value = "Add">
+        		    </form>
+                </td>
+                <td>
+                    <form action="/removeFriend" method="POST">
+                        <input type="text" name="friend" placeholder="Username of friend">
+                        <input type="hidden" name="group" value="{{line.name}}">
+                        <input type="submit" id="remove" value = "Remove">
+                    </form>
+				</td>
+                <td><a href="/viewfg">View</a></td>
             </tr>
         {% endfor %}
     </table>
-	
+	<!--
 	<h3> Add to your existing Friend Groups </h3>
 	
 	<form action="/addtofg" method="POST">
@@ -79,7 +102,7 @@
 		<br>
 		<input type="submit" value = AddFriend>
 	</form>
-	
+	-->
     <h3> Post Content: </h3>
     
     <form action="/post" method="POST">

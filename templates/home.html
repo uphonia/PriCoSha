@@ -14,18 +14,38 @@
 	
 	<h3> Timeline: </h3>
 	<table>
+	    <th>ContentID</th>
         <th>Name</th>
         <th>Link</th>
 		<th>Timestamp</th>
+		<th>Tag?</th>
+		<th>Comment?</th>
         
         {% for line in postline %}
             <tr>
+                <td>{{line.ID}}</td>
                 <td>{{line.name}}</td>
                 <td>{{line.link}}</td>
 				<td>{{line.timestamp}}</td>
+				<td>
+				    <form action="/tag" method="POST">
+				        <input type="hidden" name="contentID" value="{{line.ID}}">
+				        <input type="text" name="taggee" placeholder="Username">
+				        <input type="submit" id="tag_butt" value = "Tag">
+				    </form>
+				</td>
+				<td>
+				    <form action="/comment" method="POST">
+				        <input type="hidden" name="contentID" value="{{line.ID}}">
+				        <input type="text" name="commentText" placeholder="Comment">
+				        <input type="submit" id="comm_butt" value = "Comment">
+				    </form>
+				</td>
             </tr>
         {% endfor %}
-    </table>
+    </table> <br>
+    
+    <a href="/viewtags">View Tags</a>
     
     <h3> Create Friend Groups: </h3>
     
@@ -60,8 +80,6 @@
 		<input type="submit" value = AddFriend>
 	</form>
 	
-	
-    
     <h3> Post Content: </h3>
     
     <form action="/post" method="POST">
@@ -75,7 +93,6 @@
         </select>
 
         <select name = "friends" id="friends">
-
             {% for line in friendgroups %}
                 <option value = {{line.name}}> {{line.name}} </option>
             {% endfor %}

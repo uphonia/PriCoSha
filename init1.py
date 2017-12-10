@@ -1,14 +1,14 @@
 #Import Flask Library
-from flask import Flask, render_template, request, session, url_for, redirect
+from flask import Flask, render_template, request, session, url_for, redirect, logging
 import pymysql.cursors
 
 #Initialize the app from Flask
 app = Flask(__name__)
 
 #Configure MySQL
-conn = pymysql.connect(host='localhost',
-                       user='root',
-                       password='',
+conn = pymysql.connect(host='192.168.64.2',
+                       user='angela',
+                       password='angela',
                        db='PriCoSha',
                        charset='utf8mb4',
                        cursorclass=pymysql.cursors.DictCursor)
@@ -84,6 +84,51 @@ def registerAuth():
 		cursor.close()
 		return render_template('home.html')
 
+@app.route('/tag', methods=['GET', 'POST'])
+def tag():
+    tagger = session['username']
+    taggee = request.form['taggee']
+    contentID = request.form['contentID']
+
+    cursor = conn.cursor()
+    
+    #if user is self tagging
+    if taggee == tagger:
+        status = 1
+        query = 'INSERT INTO Tag(ID, tagger, taggee, is_pub) VALUES(%s, %s, %s, %s)'
+        cursor.execute(query, (contentID, tagger, taggee, status))
+    
+    #if user is tagging someone else
+    else:
+        status = 0
+        query = 'INSERT INTO Tag(ID, tagger, taggee, is_pub) VALUES(%s, %s, %s, %s)'
+        cursor.execute(query, (contentID, tagger, taggee, status))
+        
+    conn.commit()
+    cursor.close()
+    return redirect(url_for('home'))
+
+@app.route('/viewtags', methods=['GET', 'POST'])
+def viewtags():
+    
+    return render_template('tags.html')
+
+@app.route('/comment', methods=['GET', 'POST'])
+def comment():
+    username = session['username']
+    text = request.form['commentText']
+    contentID = request.form['contentID']
+
+    cursor = conn.cursor()
+    
+    query = 'INSERT INTO comment(ID, username, text) VALUES (%s, %s, %s)'
+    cursor.execute(query, (contentID, username, text))
+    
+    conn.commit()
+    cursor.close()
+    
+    return redirect(url_for('home'))
+    
 @app.route('/home')
 def home():
     username = session['username']
@@ -94,7 +139,7 @@ def home():
     query = 'SELECT ID, timestamp, name, link, privacy FROM Content WHERE username = %s ORDER BY timestamp DESC'
     cursor.execute(query, (username))
     data = cursor.fetchall()
-    query = 'SELECT name, link, timestamp FROM content WHERE privacy = "public" OR name in (SELECT content.name FROM content INNER JOIN share NATURAL JOIN member_of ON content.username = share.owner AND content.ID = share.ID WHERE share.name = member_of.name AND member_of.username = %s OR content.privacy = "public")ORDER BY timestamp DESC'
+    query = 'SELECT ID, name, link, timestamp FROM Content WHERE privacy = "public" OR name in (SELECT Content.name FROM Content INNER JOIN Share NATURAL JOIN member_of ON Content.username = Share.owner AND Content.ID = Share.ID WHERE Share.name = member_of.name AND member_of.username = %s OR Content.privacy = "public")ORDER BY timestamp DESC'
     cursor.execute(query, (username))
     sharedposts = cursor.fetchall()
     cursor.close()
@@ -114,7 +159,7 @@ def post():
 	if privacy == "private":
 		friendgroups = request.form['friends']
 		query = 'INSERT INTO Share (name, ID, owner) VALUES (%s, %s, %s)'
-		cursor.execute(query,( friendgroups, id, username))
+		cursor.execute(query,(friendgroups, id, username))
 		
 	query = 'INSERT INTO Post (username, id) VALUES (%s, %s)'
 	cursor.execute (query, (username, id))

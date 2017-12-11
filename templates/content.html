@@ -1,17 +1,68 @@
 <html>
     <head>
         <style>
-    
-        </style>
+    table, th, td{
+		border: 1px solid black;
+	}
+    </style>
     </head>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <body>
-        <h1> Page to show content </h1>
-        <p1> This page will show the content (picture, text, etc), with comments and tags. </p1> <br>
-        <p2> It would also have a textbox for additional comments. Have a button to tag maybe. </p2> <br>
-        <p3> Some buttons to go back or somethin. </p3>
+	<br>
+	Contents:
+	<table>
+		<th>ID</th>
+		<th>Name</th>
+        <th>Link</th>
+		{% for line in content%}
+	
+			<tr>
+				<td>{{line.ID}}</td>
+				<td>{{line.name}}</td>
+				<td>{{line.link}}</td>
+				
+			</tr>
+		{% endfor %}
+	</table>
+	
+	<br>
+	Comments:
+	<table>
+		<th>Username</th>
+		<th>Text</th>
+        <th>Timestamp</th>
+		{% for line in comments%}
+	
+			<tr>
+				<td>{{line.username}}</td>
+				<td>{{line.text}}</td>
+				<td>{{line.timestamp}}</td>
+				
+			</tr>
+		{% endfor %}
+	</table>
+	
+	<br>
+	Tags:
+	<table>
+		<th>Tagger</th>
+		<th>Taggee</th>
+        <th>Timestamp</th>
+		{% for line in tags%}
+	
+			<tr>
+				<td>{{line.tagger}}</td>
+				<td>{{line.taggee}}</td>
+				<td>{{line.timestamp}}</td>
+				
+			</tr>
+		{% endfor %}
+	</table>
+	
+	<button onclick="location.href='/home'" id="myButton" class="float-left submit-button" >Home</button>
     </body>
-
+	
+	
 </html>

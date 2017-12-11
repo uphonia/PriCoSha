@@ -43,7 +43,10 @@
 				    </form>
 				</td>
 				<td>
-				    <a href="/content">View</a>
+				    <form action="/content" method="POST">
+				        <input type="hidden" name="contentID" value="{{line.ID}}">
+						<input type="submit" id="view_butt" value="View">
+					</form>
 				</td>
             </tr>
         {% endfor %}
@@ -144,6 +147,33 @@
             </tr>
         {% endfor %}
     </table>
+	
+	<h3> Proposed Tags </h3>
+	<table> 
+	
+		<th> ID </th>
+		<th> Accept </th>
+		<th> Decline </th>
+		
+		{% for line in proposedtags %}
+			<tr>
+				<td> {{line.ID}} </td>
+				<td>
+					<form action="/accepttag" method="POST">
+						<input type="hidden" name="contentID" value="{{line.ID}}">
+						<input type="submit" value="Accept">
+					</form>
+				</td>
+				<td>
+					<form action="/rejecttag" method="POST">
+						<input type="hidden" name="contentID" value="{{line.ID}}">
+						<input type="submit" value="Reject">
+					</form>
+				</td>
+			</tr>
+		{% endfor %}
+	
+	</table>
     
     <a href="/logout">Logout</a>
 

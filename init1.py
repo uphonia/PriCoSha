@@ -257,6 +257,19 @@ def addtofg():
 	cursor.close()
 	
 	return redirect(url_for('home'))
+	
+@app.route('/changepw', methods=['GET', 'POST'])
+def changepw():
+	username = session['username']
+	cursor = conn.cursor()
+	password = request.form['newpassword']
+	
+	query = 'UPDATE user SET password=%s WHERE username=%s'
+	cursor.execute(query, (password, username))
+	
+	conn.commit()
+	cursor.close()
+	return redirect(url_for('home'))
     
 @app.route('/logout')
 def logout():

@@ -6,9 +6,9 @@ import pymysql.cursors
 app = Flask(__name__)
 
 #Configure MySQL
-conn = pymysql.connect(host='localhost',
-                       user='root',
-                       password='',
+conn = pymysql.connect(host='192.168.64.2',
+                       user='angela',
+                       password='angela',
                        db='PriCoSha',
                        charset='utf8mb4',
                        cursorclass=pymysql.cursors.DictCursor)
@@ -113,46 +113,35 @@ def accepttags():
 	username = session['username']
 	cursor = conn.cursor();
 	contentID = request.form['contentID']
-	query = 'UPDATE tag SET is_pub=1 WHERE ID=%s AND taggee=%s'
+	query = 'UPDATE Tag SET is_pub=1 WHERE ID=%s AND taggee=%s'
 	cursor.execute(query, (contentID,username))
 	conn.commit()
 	cursor.close();
 	return redirect(url_for('home'))
 
-	
 @app.route('/rejecttag', methods=['GET','POST'])
 def rejecttags():
 	username = session['username']
 	cursor = conn.cursor();
 	contentID = request.form['contentID']
-	query = 'DELETE FROM tag WHERE ID=%s AND taggee=%s'
+	query = 'DELETE FROM Tag WHERE ID=%s AND taggee=%s'
 	cursor.execute(query, (contentID,username))
 	conn.commit()
 	cursor.close();
 	return redirect(url_for('home'))
-	
-@app.route('/viewtags', methods=['GET', 'POST'])
-def viewtags():
-    
-    return render_template('tags.html')
-
-@app.route('/viewfg', methods=['GET', 'POST'])
-def viewfg():
-	
-    return render_template('friendgroup.html')
 
 @app.route('/content', methods=['GET', 'POST'])
 def content():
     username = session['username']
     cursor = conn.cursor();
     contentID = request.form['contentID']
-    query = 'SELECT name,link,ID FROM content WHERE ID = %s'
+    query = 'SELECT name,link,ID FROM Content WHERE ID = %s'
     cursor.execute (query, (contentID))
     data = cursor.fetchall()
     query = 'SELECT username, timestamp, text FROM comment WHERE ID = %s'
     cursor.execute (query, (contentID))
     data2 = cursor.fetchall()
-    query = 'SELECT tagger, taggee, timestamp FROM tag WHERE ID = %s AND is_pub="1"'
+    query = 'SELECT tagger, taggee, timestamp FROM Tag WHERE ID = %s AND is_pub="1"'
     cursor.execute (query, (contentID))
     data3 = cursor.fetchall()
     cursor.close()
@@ -187,7 +176,7 @@ def home():
     query = 'SELECT ID, name, link, timestamp FROM Content WHERE privacy = "public" OR name in (SELECT Content.name FROM Content INNER JOIN Share NATURAL JOIN member_of ON Content.username = Share.owner AND Content.ID = Share.ID WHERE Share.name = member_of.name AND member_of.username = %s OR Content.privacy = "public")ORDER BY timestamp DESC'
     cursor.execute(query, (username))
     sharedposts = cursor.fetchall()
-    query = 'SELECT ID FROM tag WHERE taggee=%s AND is_pub=0'
+    query = 'SELECT ID FROM Tag WHERE taggee=%s AND is_pub=0'
     cursor.execute(query, (username))
     proptags = cursor.fetchall()
     cursor.close()

@@ -51,9 +51,7 @@
             </tr>
         {% endfor %}
     </table> <br>
-    
-    <a href="/viewtags">View Tags</a>
-    
+
     <h3> Create Friend Groups: </h3>
     
     <form action="/addfg" method="POST">
@@ -68,7 +66,6 @@
         <th>Description</th>
         <th>Add Friend</th>
         <th>Remove Friend</th>
-        <th>View</th>
     
         {% for line in friendgroups %}
             <tr>
@@ -88,24 +85,10 @@
                         <input type="submit" id="remove" value = "Remove">
                     </form>
 				</td>
-                <td><a href="/viewfg">View</a></td>
             </tr>
         {% endfor %}
     </table>
-	<!--
-	<h3> Add to your existing Friend Groups </h3>
-	
-	<form action="/addtofg" method="POST">
-		Username: <input type="text" name="name" placeholder="User of friend" required/> <br>
-		<select name = "friendgroups">
-        {% for line in friendgroups %}
-           <option value = {{line.name}}> {{line.name}} </option>
-        {% endfor %}
-        </select>
-		<br>
-		<input type="submit" value = AddFriend>
-	</form>
-	-->
+    
     <h3> Post Content: </h3>
     
     <form action="/post" method="POST">
@@ -124,10 +107,8 @@
             {% endfor %}
         </select>
         
-        
         </br>
         <input type="submit" value = Post onclick="getRandomID"/>
-        
     </form>
     
     <table>
@@ -184,7 +165,6 @@
     <a href="/logout">Logout</a>
 
 </body>
-
 
 <script type="text/javascript">
 	function myFunction() {
